@@ -72,7 +72,7 @@ namespace Billing_System
             try
             {
                 SqlConnection conn = new SqlConnection(frmDashboard.connString);
-                SqlDataAdapter adapter = new SqlDataAdapter("SELECT product_id AS [ID], name AS [Name], category AS [Category], description AS [Description], quantity AS [Quantity], added_date AS [Added Date], added_by AS [Added By] FROM tbl_products", conn);
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM tbl_products", conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
                 dgvProducts.DataSource = dt;
@@ -94,8 +94,8 @@ namespace Billing_System
             try
             {
                 SqlConnection conn = new SqlConnection(frmDashboard.connString);
-                string query = "INSERT INTO tbl_products (name, category, description, quantity, added_date, added_by) " +
-                               "VALUES (@name, @category, @description, @quantity, @added_date, @added_by)";
+                string query = "INSERT INTO tbl_products (name, category,price, description, quantity, added_date, added_by) " +
+                               "VALUES (@name, @category,@price, @description, @quantity, @added_date, @added_by)";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
@@ -104,6 +104,7 @@ namespace Billing_System
                 cmd.Parameters.AddWithValue("@quantity", txtQuantity.Text.Trim());
                 cmd.Parameters.AddWithValue("@added_date", txtAddedDate.Text);
                 cmd.Parameters.AddWithValue("@added_by", txtAddedBy.Text.Trim());
+                cmd.Parameters.AddWithValue("@price", Convert.ToInt32(pricetxt.Text));
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -131,12 +132,13 @@ namespace Billing_System
             {
                 SqlConnection conn = new SqlConnection(frmDashboard.connString);
                 string query = "UPDATE tbl_products SET name=@name, category=@category, description=@description, " +
-                               "quantity=@quantity, added_date=@added_date, added_by=@added_by WHERE product_id=@id";
+                               "quantity=@quantity,price=@price added_date=@added_date, added_by=@added_by WHERE product_id=@id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", txtId.Text);
                 cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
                 cmd.Parameters.AddWithValue("@category", cmbCategory.Text);
+                cmd.Parameters.AddWithValue("@price", Convert.ToInt32(pricetxt.Text));
                 cmd.Parameters.AddWithValue("@description", txtDescription.Text.Trim());
                 cmd.Parameters.AddWithValue("@quantity", txtQuantity.Text.Trim());
                 cmd.Parameters.AddWithValue("@added_date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -195,10 +197,11 @@ namespace Billing_System
             txtId.Text = row.Cells[0].Value.ToString();
             txtName.Text = row.Cells[1].Value.ToString();
             cmbCategory.Text = row.Cells[2].Value.ToString();
-            txtDescription.Text = row.Cells[3].Value.ToString();
-            txtQuantity.Text = row.Cells[4].Value.ToString();
-            txtAddedDate.Text = row.Cells[5].Value.ToString();
-            txtAddedBy.Text = row.Cells[6].Value.ToString();
+            pricetxt.Text = row.Cells[3].Value.ToString();
+            txtDescription.Text = row.Cells[4].Value.ToString();
+            txtQuantity.Text = row.Cells[5].Value.ToString();
+            txtAddedDate.Text = row.Cells[6].Value.ToString();
+            txtAddedBy.Text = row.Cells[7].Value.ToString();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -241,6 +244,11 @@ namespace Billing_System
         }
 
         private void dgvProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void pricetxt_TextChanged(object sender, EventArgs e)
         {
 
         }

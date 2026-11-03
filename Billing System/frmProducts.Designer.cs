@@ -37,6 +37,8 @@ namespace Billing_System
             btnAdd = new Button();
             btnUpdate = new Button();
             btnDelete = new Button();
+            pricetxt = new TextBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             SuspendLayout();
             // 
@@ -102,7 +104,7 @@ namespace Billing_System
             // 
             lblDescription.AutoSize = true;
             lblDescription.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            lblDescription.Location = new Point(25, 145);
+            lblDescription.Location = new Point(25, 210);
             lblDescription.Name = "lblDescription";
             lblDescription.Size = new Size(98, 21);
             lblDescription.TabIndex = 6;
@@ -111,7 +113,7 @@ namespace Billing_System
             // txtDescription
             // 
             txtDescription.Font = new Font("Segoe UI", 9.5F);
-            txtDescription.Location = new Point(130, 142);
+            txtDescription.Location = new Point(130, 193);
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.Size = new Size(185, 75);
@@ -121,7 +123,7 @@ namespace Billing_System
             // 
             lblQuantity.AutoSize = true;
             lblQuantity.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            lblQuantity.Location = new Point(25, 230);
+            lblQuantity.Location = new Point(25, 274);
             lblQuantity.Name = "lblQuantity";
             lblQuantity.Size = new Size(77, 21);
             lblQuantity.TabIndex = 8;
@@ -130,7 +132,7 @@ namespace Billing_System
             // txtQuantity
             // 
             txtQuantity.Font = new Font("Segoe UI", 9.5F);
-            txtQuantity.Location = new Point(130, 227);
+            txtQuantity.Location = new Point(130, 285);
             txtQuantity.Name = "txtQuantity";
             txtQuantity.Size = new Size(185, 29);
             txtQuantity.TabIndex = 9;
@@ -139,7 +141,7 @@ namespace Billing_System
             // 
             lblAddedDate.AutoSize = true;
             lblAddedDate.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            lblAddedDate.Location = new Point(25, 270);
+            lblAddedDate.Location = new Point(25, 323);
             lblAddedDate.Name = "lblAddedDate";
             lblAddedDate.Size = new Size(100, 21);
             lblAddedDate.TabIndex = 10;
@@ -148,7 +150,7 @@ namespace Billing_System
             // txtAddedDate
             // 
             txtAddedDate.Font = new Font("Segoe UI", 9.5F);
-            txtAddedDate.Location = new Point(130, 267);
+            txtAddedDate.Location = new Point(130, 320);
             txtAddedDate.Name = "txtAddedDate";
             txtAddedDate.ReadOnly = true;
             txtAddedDate.Size = new Size(185, 29);
@@ -158,7 +160,7 @@ namespace Billing_System
             // 
             lblAddedBy.AutoSize = true;
             lblAddedBy.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            lblAddedBy.Location = new Point(25, 310);
+            lblAddedBy.Location = new Point(22, 358);
             lblAddedBy.Name = "lblAddedBy";
             lblAddedBy.Size = new Size(83, 21);
             lblAddedBy.TabIndex = 12;
@@ -167,7 +169,7 @@ namespace Billing_System
             // txtAddedBy
             // 
             txtAddedBy.Font = new Font("Segoe UI", 9.5F);
-            txtAddedBy.Location = new Point(130, 307);
+            txtAddedBy.Location = new Point(130, 355);
             txtAddedBy.Name = "txtAddedBy";
             txtAddedBy.Size = new Size(185, 29);
             txtAddedBy.TabIndex = 13;
@@ -244,11 +246,32 @@ namespace Billing_System
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += btnDelete_Click;
             // 
+            // pricetxt
+            // 
+            pricetxt.Font = new Font("Segoe UI", 9.5F);
+            pricetxt.Location = new Point(130, 146);
+            pricetxt.Name = "pricetxt";
+            pricetxt.Size = new Size(185, 29);
+            pricetxt.TabIndex = 20;
+            pricetxt.TextChanged += pricetxt_TextChanged;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            label1.Location = new Point(25, 149);
+            label1.Name = "label1";
+            label1.Size = new Size(48, 21);
+            label1.TabIndex = 21;
+            label1.Text = "Price";
+            // 
             // frmProducts
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(830, 415);
+            Controls.Add(label1);
+            Controls.Add(pricetxt);
             Controls.Add(btnDelete);
             Controls.Add(btnUpdate);
             Controls.Add(btnAdd);
@@ -303,5 +326,7 @@ namespace Billing_System
         private Button btnAdd;
         private Button btnUpdate;
         private Button btnDelete;
+        private TextBox pricetxt;
+        private Label label1;
     }
 }

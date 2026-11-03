@@ -277,6 +277,16 @@ namespace Billing_System
         {
 
         }
+
+        private void txtUserId_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

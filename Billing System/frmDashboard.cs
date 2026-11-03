@@ -51,5 +51,12 @@ namespace Billing_System
         {
 
         }
+
+        private void customerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmCustomer fu = new frmCustomer();
+            fu.Show();
+            
+        }
     }
 }

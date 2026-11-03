@@ -80,7 +80,7 @@ namespace Billing_System
                 }
                 else if (type.Text == "User")
                 {
-                    frmUsers fu = new frmUsers();
+                    frmCustomer fu = new frmCustomer();
                     fu.Show();
                     this.Hide();
                 }

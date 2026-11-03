@@ -37,6 +37,7 @@ USE BillingSystemDB;
         product_id INT PRIMARY KEY IDENTITY(1,1),
         name NVARCHAR(100),
         category NVARCHAR(100),
+        price decimal(10, 2),
         description NVARCHAR(250),
         quantity NVARCHAR(50),
         added_date NVARCHAR(50),
