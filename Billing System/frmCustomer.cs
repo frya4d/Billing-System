@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -63,14 +63,21 @@ namespace Billing_System
                 return;
             }
 
-            if (contacttxt.Text.Length != 11)
+            if (!Program.IsValidName(nametxt.Text, out string nameError))
             {
-                MessageBox.Show("Invalid Phone Number");
+                MessageBox.Show(nameError);
                 return;
             }
-            if (!emailtxt.Text.Contains("@") || !emailtxt.Text.Contains("."))
+
+            if (!Program.IsValidPhone(contacttxt.Text, out string phoneError))
             {
-                MessageBox.Show("Invalid Email");
+                MessageBox.Show(phoneError);
+                return;
+            }
+
+            if (!Program.IsValidEmail(emailtxt.Text, out string emailError))
+            {
+                MessageBox.Show(emailError);
                 return;
             }
 
@@ -122,14 +129,21 @@ namespace Billing_System
                 MessageBox.Show("Please fill in all fields!");
                 return;
             }
-            if (contacttxt.Text.Length != 11)
+            if (!Program.IsValidName(nametxt.Text, out string nameError))
             {
-                MessageBox.Show("Invalid Phone Number");
+                MessageBox.Show(nameError);
                 return;
             }
-            if (!emailtxt.Text.Contains("@") || !emailtxt.Text.Contains("."))
+
+            if (!Program.IsValidPhone(contacttxt.Text, out string phoneError))
             {
-                MessageBox.Show("Invalid Email");
+                MessageBox.Show(phoneError);
+                return;
+            }
+
+            if (!Program.IsValidEmail(emailtxt.Text, out string emailError))
+            {
+                MessageBox.Show(emailError);
                 return;
             }
 
@@ -139,9 +153,10 @@ namespace Billing_System
             {
                 SqlConnection conn = new SqlConnection(frmDashboard.connString);
                 string query = "UPDATE tbl_customer SET type=@type, name=@name, contact=@contact, " +
-                               "email=@email, address=@address";
+                               "email=@email, address=@address WHERE id=@id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", idtxt.Text);
                 cmd.Parameters.AddWithValue("@type", typetxt.Text.Trim());
                 cmd.Parameters.AddWithValue("@name", nametxt.Text.Trim());
                 cmd.Parameters.AddWithValue("@contact", contacttxt.Text.Trim());

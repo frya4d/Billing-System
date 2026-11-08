@@ -38,36 +38,9 @@ namespace Billing_System
 
         private bool CheckPassword(string password)
         {
-            if (password.Length < 8)
+            if (!Program.IsValidPassword(password, out string errorMessage))
             {
-                MessageBox.Show("Password must be at least 8 characters long!");
-                return false;
-            }
-
-            bool hasLetter = false;
-            bool hasNumber = false;
-            bool hasSymbol = false;
-
-            for (int i = 0; i < password.Length; i++)
-            {
-                char c = password[i];
-                if (char.IsLetter(c))
-                {
-                    hasLetter = true;
-                }
-                else if (char.IsDigit(c))
-                {
-                    hasNumber = true;
-                }
-                else
-                {
-                    hasSymbol = true;
-                }
-            }
-
-            if (!hasLetter || !hasNumber || !hasSymbol)
-            {
-                MessageBox.Show("Password must contain letters, numbers, and symbols!");
+                MessageBox.Show(errorMessage);
                 return false;
             }
 
@@ -84,8 +57,33 @@ namespace Billing_System
                 return;
             }
 
-            if (!CheckPassword(txtPassword.Text))
+            if (!Program.IsValidName(txtFirstName.Text, out string fnError))
             {
+                MessageBox.Show(fnError);
+                return;
+            }
+
+            if (!Program.IsValidName(txtLastName.Text, out string lnError))
+            {
+                MessageBox.Show(lnError);
+                return;
+            }
+
+            if (!Program.IsValidEmail(txtEmail.Text, out string emailError))
+            {
+                MessageBox.Show(emailError);
+                return;
+            }
+
+            if (!Program.IsValidPhone(txtContact.Text, out string phoneError))
+            {
+                MessageBox.Show(phoneError);
+                return;
+            }
+
+            if (!Program.IsValidPassword(txtPassword.Text, out string passError))
+            {
+                MessageBox.Show(passError);
                 return;
             }
 
@@ -142,8 +140,33 @@ namespace Billing_System
                 return;
             }
 
-            if (!CheckPassword(txtPassword.Text))
+            if (!Program.IsValidName(txtFirstName.Text, out string fnError))
             {
+                MessageBox.Show(fnError);
+                return;
+            }
+
+            if (!Program.IsValidName(txtLastName.Text, out string lnError))
+            {
+                MessageBox.Show(lnError);
+                return;
+            }
+
+            if (!Program.IsValidEmail(txtEmail.Text, out string emailError))
+            {
+                MessageBox.Show(emailError);
+                return;
+            }
+
+            if (!Program.IsValidPhone(txtContact.Text, out string phoneError))
+            {
+                MessageBox.Show(phoneError);
+                return;
+            }
+
+            if (!Program.IsValidPassword(txtPassword.Text, out string passError))
+            {
+                MessageBox.Show(passError);
                 return;
             }
 

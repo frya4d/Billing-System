@@ -27,6 +27,12 @@ namespace Billing_System
                 return;
             }
 
+            if (!Program.IsValidPassword(txtNewPassword.Text, out string passError))
+            {
+                MessageBox.Show(passError);
+                return;
+            }
+
             try
             {
                 SqlConnection conn = new SqlConnection(frmDashboard.connString);
