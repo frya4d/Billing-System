@@ -57,10 +57,12 @@ namespace Billing_System
 
             sqll.Open();
             int check = 0;
+            int userId = 0;
 
             SqlDataReader dl = sql.ExecuteReader();
             while (dl.Read())
             {
+                userId = Convert.ToInt32(dl["id"]);
                 check++;
             }
             dl.Close();
@@ -71,6 +73,7 @@ namespace Billing_System
                 MessageBox.Show("Login Successful!");
 
                 frmDashboard.LoggedInUser = usertxt.Text.Trim();
+                frmDashboard.LoggedInUserId = userId;
 
                 if (type.Text == "Admin")
                 {

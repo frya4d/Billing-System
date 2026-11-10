@@ -1,3 +1,4 @@
+
 namespace Billing_System
 {
     partial class frmDashboard
@@ -29,6 +30,7 @@ namespace Billing_System
             lblFooter = new Label();
             panelContainer = new Panel();
             lblBillingSystem = new Label();
+            purchasesAndSalesToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             panelFooter.SuspendLayout();
             panelContainer.SuspendLayout();
@@ -38,7 +40,7 @@ namespace Billing_System
             // 
             menuStrip1.BackColor = Color.White;
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { usersToolStripMenuItem, categoryToolStripMenuItem, productsToolStripMenuItem, inventoryToolStripMenuItem, transactionToolStripMenuItem, customerToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { usersToolStripMenuItem, categoryToolStripMenuItem, productsToolStripMenuItem, inventoryToolStripMenuItem, transactionToolStripMenuItem, customerToolStripMenuItem, purchasesAndSalesToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(7, 3, 0, 3);
@@ -72,12 +74,14 @@ namespace Billing_System
             inventoryToolStripMenuItem.Name = "inventoryToolStripMenuItem";
             inventoryToolStripMenuItem.Size = new Size(84, 24);
             inventoryToolStripMenuItem.Text = "Inventory";
+            inventoryToolStripMenuItem.Click += inventoryToolStripMenuItem_Click;
             // 
             // transactionToolStripMenuItem
             // 
             transactionToolStripMenuItem.Name = "transactionToolStripMenuItem";
             transactionToolStripMenuItem.Size = new Size(98, 24);
             transactionToolStripMenuItem.Text = "Transaction";
+            transactionToolStripMenuItem.Click += transactionToolStripMenuItem_Click;
             // 
             // customerToolStripMenuItem
             // 
@@ -145,6 +149,13 @@ namespace Billing_System
             lblBillingSystem.TabIndex = 0;
             lblBillingSystem.Text = "Billing System";
             // 
+            // purchasesAndSalesToolStripMenuItem
+            // 
+            purchasesAndSalesToolStripMenuItem.Name = "purchasesAndSalesToolStripMenuItem";
+            purchasesAndSalesToolStripMenuItem.Size = new Size(148, 24);
+            purchasesAndSalesToolStripMenuItem.Text = "PurchasesAndSales";
+            purchasesAndSalesToolStripMenuItem.Click += purchasesAndSalesToolStripMenuItem_Click_1;
+            // 
             // frmDashboard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -170,6 +181,16 @@ namespace Billing_System
             PerformLayout();
         }
 
+        private void purchasesAndSalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void inventoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         private MenuStrip menuStrip1;
@@ -184,5 +205,6 @@ namespace Billing_System
         private Label lblFooter;
         private Panel panelContainer;
         private Label lblBillingSystem;
+        private ToolStripMenuItem purchasesAndSalesToolStripMenuItem;
     }
 }

@@ -5,6 +5,7 @@ namespace Billing_System
         public static string connString = @"Data Source=Fryad;Initial Catalog=BillingSystemDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
 
         public static string LoggedInUser = "Fryad";
+        public static int LoggedInUserId = 0;
 
         public frmDashboard()
         {
@@ -56,7 +57,18 @@ namespace Billing_System
         {
             frmCustomer fu = new frmCustomer();
             fu.Show();
-            
+
+        }
+
+        private void transactionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void purchasesAndSalesToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            PurchasesAndSales ps = new PurchasesAndSales();
+            ps.Show();
         }
     }
 }
