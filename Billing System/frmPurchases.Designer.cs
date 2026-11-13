@@ -1,6 +1,6 @@
 namespace Billing_System
 {
-    partial class PurchasesAndSales
+    partial class frmPurchases
     {
         /// <summary>
         /// Required designer variable.
@@ -133,7 +133,7 @@ namespace Billing_System
             nametxt.ReadOnly = true;
             nametxt.Size = new Size(215, 27);
             nametxt.TabIndex = 7;
-            nametxt.TextChanged += nametxt_TextChanged;
+
             // 
             // addresstxt
             // 
@@ -240,7 +240,7 @@ namespace Billing_System
             catetxt.ReadOnly = true;
             catetxt.Size = new Size(181, 27);
             catetxt.TabIndex = 19;
-            catetxt.TextChanged += textBox7_TextChanged;
+
             // 
             // pnametxt
             // 
@@ -332,7 +332,7 @@ namespace Billing_System
             txtReturn.Name = "txtReturn";
             txtReturn.Size = new Size(221, 27);
             txtReturn.TabIndex = 30;
-            txtReturn.TextChanged += textBox11_TextChanged;
+
             // 
             // txtPaid
             // 
@@ -374,7 +374,7 @@ namespace Billing_System
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
-            // PurchasesAndSales
+
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -414,9 +414,9 @@ namespace Billing_System
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Name = "PurchasesAndSales";
-            Text = "PurchasesAndSales";
-            Load += PurchasesAndSales_Load;
+            Name = "frmPurchases";
+            Text = "frmPurchases";
+            Load += frmPurchases_Load;
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
             ResumeLayout(false);
             PerformLayout();

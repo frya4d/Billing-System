@@ -2,11 +2,6 @@ namespace Billing_System
 {
     public static class Program
     {
-        // ==============================================================
-        // پشکنینی بەهێزیی وشەی نهێنی (Password Policy)
-        // ١. لانیکەم ٨ پیت و ژمارە بێت
-        // ٢. پیت و ژمارە و هێمای تێدابێت
-        // ==============================================================
         public static bool IsValidPassword(string password, out string errorMessage)
         {
             errorMessage = "";
@@ -21,7 +16,6 @@ namespace Billing_System
             bool hasDigit = false;
             bool hasSymbol = false;
 
-            // پشکنینی پیتەکانی وشەی نهێنی یەک بە یەک
             foreach (char c in password)
             {
                 if (char.IsLetter(c))
@@ -34,7 +28,7 @@ namespace Billing_System
                 }
                 else
                 {
-                    hasSymbol = true; // هێماکان وەک @, #, $, %, ...
+                    hasSymbol = true;
                 }
             }
 
@@ -59,9 +53,6 @@ namespace Billing_System
             return true;
         }
 
-        // ==============================================================
-        // پشکنینی ناو (تەنها دەبێت لە پیت و بۆشایی پێکبێت)
-        // ==============================================================
         public static bool IsValidName(string name, out string errorMessage)
         {
             errorMessage = "";
@@ -84,9 +75,6 @@ namespace Billing_System
             return true;
         }
 
-        // ==============================================================
-        // پشکنینی شێوازی ئیمەیڵ (Email Validation)
-        // ==============================================================
         public static bool IsValidEmail(string email, out string errorMessage)
         {
             errorMessage = "";
@@ -109,9 +97,6 @@ namespace Billing_System
             return true;
         }
 
-        // ==============================================================
-        // پشکنینی ژمارەی مۆبایل (تەنها ژمارە و دەبێت ڕێک ١١ ژمارە بێت)
-        // ==============================================================
         public static bool IsValidPhone(string phone, out string errorMessage)
         {
             errorMessage = "";

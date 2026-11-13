@@ -67,7 +67,7 @@ namespace Billing_System
 
         private void purchasesAndSalesToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            PurchasesAndSales ps = new PurchasesAndSales();
+            frmPurchases ps = new frmPurchases();
             ps.Show();
         }
     }

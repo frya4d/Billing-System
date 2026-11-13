@@ -4,7 +4,6 @@ GO
 USE BillingSystemDB;
 GO
 
--- ١. خشتەی بەکارهێنەران (Users)
 CREATE TABLE tbl_users (
     id INT PRIMARY KEY IDENTITY(1,1),
     first_name NVARCHAR(50),
@@ -19,7 +18,6 @@ CREATE TABLE tbl_users (
 );
 GO
 
--- ٢. خشتەی پۆلەکان (Categories)
 CREATE TABLE tbl_categories (
     category_id INT PRIMARY KEY IDENTITY(1,1),
     title NVARCHAR(100),
@@ -32,7 +30,6 @@ VALUES ('Phone', 'Smartphones and mobile devices'),
        ('Electronics', 'Electronic equipment and gadgets');
 GO
 
--- ٣. خشتەی کاڵاکان (Products)
 CREATE TABLE tbl_products (
     product_id INT PRIMARY KEY IDENTITY(1,1),
     name NVARCHAR(100),
@@ -45,7 +42,6 @@ CREATE TABLE tbl_products (
 );
 GO
 
--- ٤. خشتەی کڕیارەکان (Customers)
 CREATE TABLE tbl_customer (
     id INT PRIMARY KEY IDENTITY(1,1),
     type NVARCHAR(50),
@@ -56,7 +52,6 @@ CREATE TABLE tbl_customer (
 );
 GO
 
--- ٥. خشتەی مامەڵەکان / وەسڵەکان (Transaction)
 CREATE TABLE [Transaction] (
     TransactionID INT PRIMARY KEY IDENTITY(1,1),
     CustomerID INT NOT NULL,
@@ -71,7 +66,6 @@ CREATE TABLE [Transaction] (
 );
 GO
 
--- ٦. خشتەی وردەکاریی مامەڵەکان (TransactionDetails)
 CREATE TABLE TransactionDetails (
     DetailID INT PRIMARY KEY IDENTITY(1,1),
     TransactionID INT,
