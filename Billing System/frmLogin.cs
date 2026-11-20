@@ -56,20 +56,13 @@ namespace Billing_System
             sql.Parameters.AddWithValue("@a", type.Text.Trim());
 
             sqll.Open();
-            int check = 0;
-            int userId = 0;
-
             SqlDataReader dl = sql.ExecuteReader();
-            while (dl.Read())
+            if (dl.Read())
             {
-                userId = Convert.ToInt32(dl["id"]);
-                check++;
-            }
-            dl.Close();
-            sqll.Close();
+                int userId = Convert.ToInt32(dl["id"]);
+                dl.Close();
+                sqll.Close();
 
-            if (check == 1)
-            {
                 MessageBox.Show("Login Successful!");
 
                 frmDashboard.LoggedInUser = usertxt.Text.Trim();
@@ -90,6 +83,8 @@ namespace Billing_System
             }
             else
             {
+                dl.Close();
+                sqll.Close();
                 MessageBox.Show("Invalid Username, Password, or User Type!");
             }
         }

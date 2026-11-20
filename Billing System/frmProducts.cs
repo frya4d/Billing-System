@@ -85,9 +85,9 @@ namespace Billing_System
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (txtName.Text == "" || cmbCategory.Text == "" || txtQuantity.Text == "")
+            if (txtName.Text == "" || cmbCategory.Text == "" || pricetxt.Text == "" || txtQuantity.Text == "")
             {
-                MessageBox.Show("Please enter Name, Category, and Quantity!");
+                MessageBox.Show("Please enter Name, Category, Price, and Quantity!");
                 return;
             }
 
@@ -104,7 +104,7 @@ namespace Billing_System
                 cmd.Parameters.AddWithValue("@quantity", txtQuantity.Text.Trim());
                 cmd.Parameters.AddWithValue("@added_date", txtAddedDate.Text);
                 cmd.Parameters.AddWithValue("@added_by", txtAddedBy.Text.Trim());
-                cmd.Parameters.AddWithValue("@price", Convert.ToInt32(pricetxt.Text));
+                cmd.Parameters.AddWithValue("@price", Convert.ToDecimal(pricetxt.Text.Trim()));
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -132,13 +132,13 @@ namespace Billing_System
             {
                 SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "UPDATE tbl_products SET name=@name, category=@category, description=@description, " +
-                               "quantity=@quantity,price=@price added_date=@added_date, added_by=@added_by WHERE product_id=@id";
+                               "quantity=@quantity, price=@price, added_date=@added_date, added_by=@added_by WHERE product_id=@id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", txtId.Text);
                 cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
                 cmd.Parameters.AddWithValue("@category", cmbCategory.Text);
-                cmd.Parameters.AddWithValue("@price", Convert.ToInt32(pricetxt.Text));
+                cmd.Parameters.AddWithValue("@price", Convert.ToDecimal(pricetxt.Text.Trim()));
                 cmd.Parameters.AddWithValue("@description", txtDescription.Text.Trim());
                 cmd.Parameters.AddWithValue("@quantity", txtQuantity.Text.Trim());
                 cmd.Parameters.AddWithValue("@added_date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
