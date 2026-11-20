@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using static Billing_System.Program;
 
 namespace Billing_System
 {
@@ -21,7 +22,7 @@ namespace Billing_System
         {
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM tbl_customer", conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -63,21 +64,21 @@ namespace Billing_System
                 return;
             }
 
-            if (!Program.IsValidName(nametxt.Text, out string nameError))
+            if (!IsValidName(nametxt.Text))
             {
-                MessageBox.Show(nameError);
+                MessageBox.Show("Invalid Name");
                 return;
             }
 
-            if (!Program.IsValidPhone(contacttxt.Text, out string phoneError))
+            if (!IsValidEmail(emailtxt.Text))
             {
-                MessageBox.Show(phoneError);
+                MessageBox.Show("Invalid Email");
                 return;
             }
 
-            if (!Program.IsValidEmail(emailtxt.Text, out string emailError))
+            if (!IsValidPhone(contacttxt.Text))
             {
-                MessageBox.Show(emailError);
+                MessageBox.Show("Invalid Phone");
                 return;
             }
 
@@ -85,7 +86,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "INSERT INTO tbl_customer (type, name, contact, email, address) " +
                                "VALUES (@type, @name, @contact, @email, @address)";
 
@@ -129,21 +130,21 @@ namespace Billing_System
                 MessageBox.Show("Please fill in all fields!");
                 return;
             }
-            if (!Program.IsValidName(nametxt.Text, out string nameError))
+            if (!IsValidName(nametxt.Text))
             {
-                MessageBox.Show(nameError);
+                MessageBox.Show("Invalid Name");
                 return;
             }
 
-            if (!Program.IsValidPhone(contacttxt.Text, out string phoneError))
+            if (!IsValidEmail(emailtxt.Text))
             {
-                MessageBox.Show(phoneError);
+                MessageBox.Show("Invalid Email");
                 return;
             }
 
-            if (!Program.IsValidEmail(emailtxt.Text, out string emailError))
+            if (!IsValidPhone(contacttxt.Text))
             {
-                MessageBox.Show(emailError);
+                MessageBox.Show("Invalid Phone");
                 return;
             }
 
@@ -151,7 +152,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "UPDATE tbl_customer SET type=@type, name=@name, contact=@contact, " +
                                "email=@email, address=@address WHERE id=@id";
 
@@ -189,7 +190,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "DELETE FROM tbl_customer WHERE id=@id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);

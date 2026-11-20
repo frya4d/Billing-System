@@ -2,124 +2,68 @@ namespace Billing_System
 {
     public static class Program
     {
-        public static bool IsValidPassword(string password, out string errorMessage)
+        public static string connString = @"Data Source=Fryad;Initial Catalog=BillingSystemDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
+
+        // Password
+        public static bool IsValidPassword(string password)
         {
-            errorMessage = "";
-
-            if (string.IsNullOrEmpty(password) || password.Length < 8)
-            {
-                errorMessage = "وشەی نهێنی نابێت لە ٨ پیت و ژمارە کەمتر بێت!";
+            if (password == null || password.Length < 8)
                 return false;
-            }
 
-            bool hasLetter = false;
-            bool hasDigit = false;
-            bool hasSymbol = false;
+            bool letter = false;
+            bool number = false;
+            bool symbol = false;
 
             foreach (char c in password)
             {
                 if (char.IsLetter(c))
-                {
-                    hasLetter = true;
-                }
+                    letter = true;
                 else if (char.IsDigit(c))
-                {
-                    hasDigit = true;
-                }
+                    number = true;
                 else
-                {
-                    hasSymbol = true;
-                }
+                    symbol = true;
             }
 
-            if (!hasLetter)
-            {
-                errorMessage = "پێویستە وشەی نهێنی لانیکەم یەک پیتی تێدابێت (Letter)!";
-                return false;
-            }
-
-            if (!hasDigit)
-            {
-                errorMessage = "پێویستە وشەی نهێنی لانیکەم یەک ژمارەی تێدابێت (Number)!";
-                return false;
-            }
-
-            if (!hasSymbol)
-            {
-                errorMessage = "پێویستە وشەی نهێنی لانیکەم یەک هێمای تێدابێت (Symbol وەک @, #, $, %)!";
-                return false;
-            }
-
-            return true;
+            return letter && number && symbol;
         }
 
-        public static bool IsValidName(string name, out string errorMessage)
+        // Name
+        public static bool IsValidName(string name)
         {
-            errorMessage = "";
             if (string.IsNullOrWhiteSpace(name))
-            {
-                errorMessage = "تکایە ناو بنووسە!";
                 return false;
-            }
 
-            string clean = name.Trim();
-            foreach (char c in clean)
+            foreach (char c in name)
             {
-                if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
-                {
-                    errorMessage = "ناو دەبێت تەنها لە پیت پێکبێت (ژمارە و هێما ڕێگەپێدراو نییە)!";
+                if (!char.IsLetter(c) && c != ' ')
                     return false;
-                }
             }
 
             return true;
         }
 
-        public static bool IsValidEmail(string email, out string errorMessage)
+        // Email
+        public static bool IsValidEmail(string email)
         {
-            errorMessage = "";
             if (string.IsNullOrWhiteSpace(email))
-            {
-                errorMessage = "تکایە ئیمەیڵ بنووسە!";
                 return false;
-            }
 
-            string clean = email.Trim();
-            int atIndex = clean.IndexOf('@');
-            int dotIndex = clean.LastIndexOf('.');
-
-            if (atIndex <= 0 || dotIndex <= atIndex + 1 || dotIndex >= clean.Length - 1 || clean.Contains(" "))
-            {
-                errorMessage = "شێوازی ئیمەیڵ نادروستە (نموونە: user@example.com)!";
+            if (!email.Contains("@") || !email.Contains("."))
                 return false;
-            }
 
             return true;
         }
 
-        public static bool IsValidPhone(string phone, out string errorMessage)
+        // Phone
+        public static bool IsValidPhone(string phone)
         {
-            errorMessage = "";
-            if (string.IsNullOrWhiteSpace(phone))
-            {
-                errorMessage = "تکایە ژمارەی مۆبایل بنووسە!";
+            if (phone == null || phone.Length != 11)
                 return false;
-            }
 
-            string clean = phone.Trim();
-            if (clean.Length != 11)
-            {
-                errorMessage = "ژمارەی مۆبایل دەبێت تەنها لە ١١ ژمارە پێکبێت (نموونە: 07501234567)!";
-                return false;
-            }
-
-            foreach (char c in clean)
+            foreach (char c in phone)
             {
                 if (!char.IsDigit(c))
-                {
-                    errorMessage = "ژمارەی مۆبایل دەبێت تەنها لە ژمارە پێکبێت!";
                     return false;
-                }
             }
 
             return true;

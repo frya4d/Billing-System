@@ -2,8 +2,6 @@ namespace Billing_System
 {
     public partial class frmDashboard : Form
     {
-        public static string connString = @"Data Source=Fryad;Initial Catalog=BillingSystemDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;";
-
         public static string LoggedInUser = "Fryad";
         public static int LoggedInUserId = 0;
 

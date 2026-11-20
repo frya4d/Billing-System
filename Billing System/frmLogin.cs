@@ -47,7 +47,7 @@ namespace Billing_System
                 return;
             }
 
-            SqlConnection sqll = new SqlConnection(frmDashboard.connString);
+            SqlConnection sqll = new SqlConnection(Program.connString);
 
             String query = "SELECT * FROM tbl_users WHERE username=@u AND password=@p AND user_type=@a ";
             SqlCommand sql = new SqlCommand(query, sqll);

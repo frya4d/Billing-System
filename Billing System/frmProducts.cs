@@ -37,7 +37,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 SqlCommand cmd = new SqlCommand("SELECT title FROM tbl_categories", conn);
 
                 conn.Open();
@@ -71,7 +71,7 @@ namespace Billing_System
         {
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM tbl_products", conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -93,7 +93,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "INSERT INTO tbl_products (name, category,price, description, quantity, added_date, added_by) " +
                                "VALUES (@name, @category,@price, @description, @quantity, @added_date, @added_by)";
 
@@ -130,7 +130,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "UPDATE tbl_products SET name=@name, category=@category, description=@description, " +
                                "quantity=@quantity,price=@price added_date=@added_date, added_by=@added_by WHERE product_id=@id";
 
@@ -168,7 +168,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "DELETE FROM tbl_products WHERE product_id=@id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -218,7 +218,7 @@ namespace Billing_System
         {
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "SELECT * FROM tbl_products WHERE product_id LIKE '%" + txtSearch.Text + "%'";
 
                 SqlDataAdapter adapter = new SqlDataAdapter(query, conn);

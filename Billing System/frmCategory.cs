@@ -19,7 +19,7 @@ namespace Billing_System
         {
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 SqlDataAdapter adapter = new SqlDataAdapter("SELECT category_id AS [Category ID], title AS [Title], description AS [Description] FROM tbl_categories", conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -41,7 +41,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "INSERT INTO tbl_categories (title, description) VALUES (@title, @description)";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@title", txtTitle.Text.Trim());
@@ -71,7 +71,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "UPDATE tbl_categories SET title=@title, description=@description WHERE category_id=@id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", txtCategoryId.Text);
@@ -102,7 +102,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "DELETE FROM tbl_categories WHERE category_id=@id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", txtCategoryId.Text);
@@ -146,7 +146,7 @@ namespace Billing_System
         {
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "SELECT * FROM tbl_categories WHERE category_id LIKE '%" + txtSearch.Text + "%'";
 
                 SqlDataAdapter adapter = new SqlDataAdapter(query, conn);

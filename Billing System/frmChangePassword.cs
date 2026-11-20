@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using static Billing_System.Program;
 
 namespace Billing_System
 {
@@ -27,15 +28,15 @@ namespace Billing_System
                 return;
             }
 
-            if (!Program.IsValidPassword(txtNewPassword.Text, out string passError))
+            if (!IsValidPassword(txtNewPassword.Text))
             {
-                MessageBox.Show(passError);
+                MessageBox.Show("Invalid Password");
                 return;
             }
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "UPDATE tbl_users SET password=@p WHERE username=@u";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@p", txtNewPassword.Text);

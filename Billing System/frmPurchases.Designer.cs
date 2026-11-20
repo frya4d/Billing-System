@@ -133,7 +133,6 @@ namespace Billing_System
             nametxt.ReadOnly = true;
             nametxt.Size = new Size(215, 27);
             nametxt.TabIndex = 7;
-
             // 
             // addresstxt
             // 
@@ -240,7 +239,6 @@ namespace Billing_System
             catetxt.ReadOnly = true;
             catetxt.Size = new Size(181, 27);
             catetxt.TabIndex = 19;
-
             // 
             // pnametxt
             // 
@@ -332,7 +330,6 @@ namespace Billing_System
             txtReturn.Name = "txtReturn";
             txtReturn.Size = new Size(221, 27);
             txtReturn.TabIndex = 30;
-
             // 
             // txtPaid
             // 
@@ -374,7 +371,7 @@ namespace Billing_System
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
-
+            // frmPurchases
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -415,6 +412,7 @@ namespace Billing_System
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "frmPurchases";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "frmPurchases";
             Load += frmPurchases_Load;
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();

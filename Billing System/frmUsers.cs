@@ -1,5 +1,6 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
+using static Billing_System.Program;
 
 namespace Billing_System
 {
@@ -19,7 +20,7 @@ namespace Billing_System
         {
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM tbl_users", conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -38,9 +39,9 @@ namespace Billing_System
 
         private bool CheckPassword(string password)
         {
-            if (!Program.IsValidPassword(password, out string errorMessage))
+            if (!IsValidPassword(password))
             {
-                MessageBox.Show(errorMessage);
+                MessageBox.Show("Invalid Password");
                 return false;
             }
 
@@ -57,33 +58,33 @@ namespace Billing_System
                 return;
             }
 
-            if (!Program.IsValidName(txtFirstName.Text, out string fnError))
+            if (!IsValidName(txtFirstName.Text))
             {
-                MessageBox.Show(fnError);
+                MessageBox.Show("Invalid Name");
                 return;
             }
 
-            if (!Program.IsValidName(txtLastName.Text, out string lnError))
+            if (!IsValidName(txtLastName.Text))
             {
-                MessageBox.Show(lnError);
+                MessageBox.Show("Invalid Name");
                 return;
             }
 
-            if (!Program.IsValidEmail(txtEmail.Text, out string emailError))
+            if (!IsValidEmail(txtEmail.Text))
             {
-                MessageBox.Show(emailError);
+                MessageBox.Show("Invalid Email");
                 return;
             }
 
-            if (!Program.IsValidPhone(txtContact.Text, out string phoneError))
+            if (!IsValidPassword(txtPassword.Text))
             {
-                MessageBox.Show(phoneError);
+                MessageBox.Show("Invalid Password");
                 return;
             }
 
-            if (!Program.IsValidPassword(txtPassword.Text, out string passError))
+            if (!IsValidPhone(txtContact.Text))
             {
-                MessageBox.Show(passError);
+                MessageBox.Show("Invalid Phone");
                 return;
             }
 
@@ -95,7 +96,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "INSERT INTO tbl_users (first_name, last_name, email, username, password, contact, gender, address, user_type) " +
                                "VALUES (@first_name, @last_name, @email, @username, @password, @contact, @gender, @address, @user_type)";
 
@@ -140,33 +141,33 @@ namespace Billing_System
                 return;
             }
 
-            if (!Program.IsValidName(txtFirstName.Text, out string fnError))
+            if (!IsValidName(txtFirstName.Text))
             {
-                MessageBox.Show(fnError);
+                MessageBox.Show("Invalid Name");
                 return;
             }
 
-            if (!Program.IsValidName(txtLastName.Text, out string lnError))
+            if (!IsValidName(txtLastName.Text))
             {
-                MessageBox.Show(lnError);
+                MessageBox.Show("Invalid Name");
                 return;
             }
 
-            if (!Program.IsValidEmail(txtEmail.Text, out string emailError))
+            if (!IsValidEmail(txtEmail.Text))
             {
-                MessageBox.Show(emailError);
+                MessageBox.Show("Invalid Email");
                 return;
             }
 
-            if (!Program.IsValidPhone(txtContact.Text, out string phoneError))
+            if (!IsValidPassword(txtPassword.Text))
             {
-                MessageBox.Show(phoneError);
+                MessageBox.Show("Invalid Password");
                 return;
             }
 
-            if (!Program.IsValidPassword(txtPassword.Text, out string passError))
+            if (!IsValidPhone(txtContact.Text))
             {
-                MessageBox.Show(passError);
+                MessageBox.Show("Invalid Phone");
                 return;
             }
 
@@ -178,7 +179,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "UPDATE tbl_users SET first_name=@first_name, last_name=@last_name, email=@email, " +
                                "username=@username, password=@password, contact=@contact, gender=@gender, " +
                                "address=@address, user_type=@user_type WHERE id=@id";
@@ -219,7 +220,7 @@ namespace Billing_System
 
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "DELETE FROM tbl_users WHERE id=@id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -262,7 +263,7 @@ namespace Billing_System
         {
             try
             {
-                SqlConnection conn = new SqlConnection(frmDashboard.connString);
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "SELECT * FROM tbl_users WHERE id LIKE '%" + txtSearch.Text + "%'";
 
                 SqlDataAdapter adapter = new SqlDataAdapter(query, conn);

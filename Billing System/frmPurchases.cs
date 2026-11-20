@@ -7,22 +7,17 @@ namespace Billing_System
 {
     public partial class frmPurchases : Form
     {
+        // بۆ هەڵگرتنی ئایدی ئەو کڕیارەی کە سێرچمان کردووە
         private int selectedCustomerId = 0;
-        private bool isClearing = false;
 
         public frmPurchases()
         {
             InitializeComponent();
-            SetupForm();
         }
 
-        private SqlConnection GetConnection()
+        private void frmPurchases_Load(object sender, EventArgs e)
         {
-            return new SqlConnection(frmDashboard.connString);
-        }
-
-        private void SetupForm()
-        {
+            // دروستکردنی ستوونەکانی خشتەی کاڵاکان
             if (dgvProducts.Columns.Count == 0)
             {
                 dgvProducts.Columns.Add("ProductID", "Product ID");
@@ -46,13 +41,13 @@ namespace Billing_System
             txtReturn.ReadOnly = true;
         }
 
-        private void frmPurchases_Load(object sender, EventArgs e)
-        {
-        }
-
+        // ==============================================================
+        // دوگمەی سێرچکردنی کڕیار بەپێی ژمارەی مۆبایل (Search Customer)
+        // ==============================================================
         private void button1_Click(object sender, EventArgs e)
         {
             string phone = searchtxt.Text.Trim();
+
             if (string.IsNullOrWhiteSpace(phone))
             {
                 MessageBox.Show("Please enter customer phone.");
@@ -61,20 +56,20 @@ namespace Billing_System
 
             try
             {
-                using SqlConnection con = GetConnection();
+                SqlConnection conn = new SqlConnection(Program.connString);
                 string query = "SELECT id, name, email, address FROM tbl_customer WHERE contact = @contact";
-                using SqlCommand cmd = new SqlCommand(query, con);
+                SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@contact", phone);
 
-                con.Open();
-                using SqlDataReader dr = cmd.ExecuteReader();
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
 
                 if (dr.Read())
                 {
                     selectedCustomerId = Convert.ToInt32(dr["id"]);
-                    nametxt.Text = dr["name"]?.ToString() ?? "";
-                    emailtxt.Text = dr["email"]?.ToString() ?? "";
-                    addresstxt.Text = dr["address"]?.ToString() ?? "";
+                    nametxt.Text = dr["name"].ToString();
+                    emailtxt.Text = dr["email"].ToString();
+                    addresstxt.Text = dr["address"].ToString();
                 }
                 else
                 {
@@ -84,6 +79,9 @@ namespace Billing_System
                     addresstxt.Clear();
                     MessageBox.Show("Customer Not Found!");
                 }
+
+                dr.Close();
+                conn.Close();
             }
             catch (Exception ex)
             {
@@ -91,11 +89,12 @@ namespace Billing_System
             }
         }
 
+        // ==============================================================
+        // کاتێک ئایدی بەرهەم دەنووسرێت، زانیارییەکان لە داتابەیس دەهێنێت
+        // ==============================================================
         private void idtxt_TextChanged(object sender, EventArgs e)
         {
-            if (isClearing) return;
-
-            if (!int.TryParse(idtxt.Text.Trim(), out int productId) || productId <= 0)
+            if (string.IsNullOrWhiteSpace(idtxt.Text))
             {
                 pnametxt.Clear();
                 catetxt.Clear();
@@ -105,19 +104,19 @@ namespace Billing_System
 
             try
             {
-                using SqlConnection con = GetConnection();
-                string query = "SELECT name, category, price FROM tbl_products WHERE product_id = @product_id";
-                using SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@product_id", productId);
+                SqlConnection conn = new SqlConnection(Program.connString);
+                string query = "SELECT name, category, price FROM tbl_products WHERE product_id = @id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", idtxt.Text.Trim());
 
-                con.Open();
-                using SqlDataReader dr = cmd.ExecuteReader();
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
 
                 if (dr.Read())
                 {
-                    pnametxt.Text = dr["name"]?.ToString() ?? "";
-                    catetxt.Text = dr["category"]?.ToString() ?? "";
-                    pricetxt.Text = dr["price"] != DBNull.Value ? dr["price"].ToString() : "";
+                    pnametxt.Text = dr["name"].ToString();
+                    catetxt.Text = dr["category"].ToString();
+                    pricetxt.Text = dr["price"].ToString();
                 }
                 else
                 {
@@ -125,14 +124,22 @@ namespace Billing_System
                     catetxt.Clear();
                     pricetxt.Clear();
                 }
+
+                dr.Close();
+                conn.Close();
             }
             catch
             {
+                // ئەگەر نووسینەکە لە ژمارە نەچوو، هیچ ناکات
             }
         }
 
+        // ==============================================================
+        // دوگمەی زیادکردنی بەرهەم بۆ ناو خشتەکە (Add Product to Grid)
+        // ==============================================================
         private void button2_Click(object sender, EventArgs e)
         {
+            // پشکنینی ئەوەی کە ئایدی و بڕ پڕکراونەتەوە و دروستن
             if (!int.TryParse(idtxt.Text.Trim(), out int productId) ||
                 !int.TryParse(quantxt.Text.Trim(), out int quantity) ||
                 quantity <= 0)
@@ -143,42 +150,38 @@ namespace Billing_System
 
             try
             {
-                string name = "";
-                string category = "";
-                decimal price = 0;
-                int stock = 0;
-                bool found = false;
+                SqlConnection conn = new SqlConnection(Program.connString);
+                string query = "SELECT name, category, price, quantity FROM tbl_products WHERE product_id = @id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", productId);
 
-                using (SqlConnection con = GetConnection())
-                {
-                    string query = "SELECT name, category, price, quantity FROM tbl_products WHERE product_id = @product_id";
-                    using SqlCommand cmd = new SqlCommand(query, con);
-                    cmd.Parameters.AddWithValue("@product_id", productId);
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
 
-                    con.Open();
-                    using SqlDataReader dr = cmd.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        found = true;
-                        name = dr["name"]?.ToString() ?? "";
-                        category = dr["category"]?.ToString() ?? "";
-                        decimal.TryParse(dr["price"]?.ToString(), out price);
-                        int.TryParse(dr["quantity"]?.ToString(), out stock);
-                    }
-                }
-
-                if (!found)
+                if (!dr.Read())
                 {
                     MessageBox.Show("Product Not Found!");
+                    dr.Close();
+                    conn.Close();
                     return;
                 }
 
+                string name = dr["name"]?.ToString() ?? "";
+                string category = dr["category"]?.ToString() ?? "";
+                decimal price = Convert.ToDecimal(dr["price"]);
+                int stock = Convert.ToInt32(dr["quantity"]);
+
+                dr.Close();
+                conn.Close();
+
+                // پشکنینی بڕی بەردەست لە مەخزەن
                 if (quantity > stock)
                 {
                     MessageBox.Show("Not Enough Stock!");
                     return;
                 }
 
+                // ئەگەر کاڵاکە پێشتر لەناو خشتەکەدا هەبێت، بڕەکەی زیاد بکە
                 foreach (DataGridViewRow row in dgvProducts.Rows)
                 {
                     if (row.IsNewRow) continue;
@@ -202,6 +205,7 @@ namespace Billing_System
                     }
                 }
 
+                // ئەگەر نوێ بوو، زیادی بکە بۆ خشتەکە
                 decimal total = price * quantity;
                 dgvProducts.Rows.Add(productId, name, category, price, quantity, total);
 
@@ -214,22 +218,12 @@ namespace Billing_System
             }
         }
 
-        private void btnRemove_Click(object? sender, EventArgs e)
-        {
-            RemoveSelectedProduct();
-        }
-
+        // ==============================================================
+        // سڕینەوەی بەرهەم لە خشتەکە بە دوگمەی Delete
+        // ==============================================================
         private void dgvProducts_KeyDown(object? sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete)
-            {
-                RemoveSelectedProduct();
-            }
-        }
-
-        private void RemoveSelectedProduct()
-        {
-            if (dgvProducts.SelectedRows.Count > 0)
+            if (e.KeyCode == Keys.Delete && dgvProducts.SelectedRows.Count > 0)
             {
                 foreach (DataGridViewRow row in dgvProducts.SelectedRows)
                 {
@@ -240,30 +234,32 @@ namespace Billing_System
                 }
                 CalculateTotal();
             }
-            else
-            {
-                MessageBox.Show("Please select a product.");
-            }
         }
 
+        // ==============================================================
+        // ژماردنی کۆی گشتی و داشکاندن و پارەی گەڕاوە (Calculate Total)
+        // ==============================================================
         private void CalculateTotal()
         {
-            if (isClearing) return;
-
             decimal subTotal = 0;
+
             foreach (DataGridViewRow row in dgvProducts.Rows)
             {
                 if (row.IsNewRow) continue;
                 subTotal += Convert.ToDecimal(row.Cells["Total"].Value);
             }
 
-            decimal.TryParse(txtDiscount.Text, out decimal discount);
-            decimal.TryParse(txtPaid.Text, out decimal paid);
+            decimal discount = 0;
+            decimal.TryParse(txtDiscount.Text, out discount);
 
             if (discount < 0) discount = 0;
             if (discount > 100) discount = 100;
 
             decimal total = subTotal - (subTotal * discount / 100);
+
+            decimal paid = 0;
+            decimal.TryParse(txtPaid.Text, out paid);
+
             decimal returnAmount = paid - total;
 
             txtSubTotal.Text = subTotal.ToString("0.00");
@@ -281,33 +277,34 @@ namespace Billing_System
             CalculateTotal();
         }
 
+        // ==============================================================
+        // دوگمەی سەیڤکردنی پسووڵە/فرۆشتن (Save Transaction)
+        // ==============================================================
         private void button3_Click(object sender, EventArgs e)
         {
+            // ١. پشکنینی ئەوەی کڕیار دیاریکراوە
             if (selectedCustomerId <= 0)
             {
                 MessageBox.Show("Please search and select a customer.");
                 return;
             }
 
+            // ٢. پشکنینی ئەوەی کاڵا لە خشتەکەدا هەیە
             if (dgvProducts.Rows.Count == 0)
             {
                 MessageBox.Show("Please add products first.");
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(txtDiscount.Text) && !decimal.TryParse(txtDiscount.Text, out _))
-            {
-                MessageBox.Show("Enter a valid Discount %.");
-                return;
-            }
-
+            // ٣. پشکنینی پارەی دراو
             if (!decimal.TryParse(txtPaid.Text, out decimal paid))
             {
                 MessageBox.Show("Enter a valid Paid Amount.");
                 return;
             }
 
-            decimal.TryParse(txtDiscount.Text, out decimal discount);
+            decimal discount = 0;
+            decimal.TryParse(txtDiscount.Text, out discount);
             if (discount < 0 || discount > 100)
             {
                 MessageBox.Show("Discount must be between 0 and 100.");
@@ -318,7 +315,9 @@ namespace Billing_System
             foreach (DataGridViewRow row in dgvProducts.Rows)
             {
                 if (!row.IsNewRow)
+                {
                     subTotal += Convert.ToDecimal(row.Cells["Total"].Value);
+                }
             }
 
             decimal total = subTotal - (subTotal * discount / 100);
@@ -330,71 +329,34 @@ namespace Billing_System
                 return;
             }
 
-            using SqlConnection con = GetConnection();
-            SqlTransaction? transaction = null;
+            // ٤. دەستپێکردنی سەیڤکردن لە داتابەیس بە Transaction
+            SqlConnection conn = new SqlConnection(Program.connString);
+            conn.Open();
+            SqlTransaction trans = conn.BeginTransaction();
 
             try
             {
-                con.Open();
-                transaction = con.BeginTransaction();
+                // ئەوەی کێ بەکارهێنەرە تۆمارکراوە
+                int addedBy = frmDashboard.LoggedInUserId;
 
-                object addedByValue = DBNull.Value;
-                if (frmDashboard.LoggedInUserId > 0)
-                {
-                    addedByValue = frmDashboard.LoggedInUserId;
-                }
-                else if (!string.IsNullOrWhiteSpace(frmDashboard.LoggedInUser))
-                {
-                    string userQuery = "SELECT TOP 1 id FROM tbl_users WHERE username = @username";
-                    using SqlCommand userCmd = new SqlCommand(userQuery, con, transaction);
-                    userCmd.Parameters.AddWithValue("@username", frmDashboard.LoggedInUser.Trim());
-                    object? result = userCmd.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
-                    {
-                        addedByValue = Convert.ToInt32(result);
-                    }
-                }
+                // أ- سەیڤکردنی زانیارییە سەرەکییەکانی پسووڵە
+                string transQuery = "INSERT INTO [Transaction] (CustomerID, SubTotal, DiscountPercent, Total, PaidAmount, ReturnAmount, AddedDate, AddedBy) " +
+                                    "VALUES (@cid, @subtotal, @discount, @total, @paid, @return, @date, @addedBy); " +
+                                    "SELECT SCOPE_IDENTITY();";
 
-                string query = @"
-                    INSERT INTO [Transaction]
-                    (CustomerID, SubTotal, DiscountPercent, Total, PaidAmount, ReturnAmount, AddedDate, AddedBy)
-                    OUTPUT INSERTED.TransactionID
-                    VALUES
-                    (@CustomerID, @SubTotal, @Discount, @Total, @Paid, @Return, @Date, @AddedBy)";
-
-                using SqlCommand cmd = new SqlCommand(query, con, transaction);
-                cmd.Parameters.AddWithValue("@CustomerID", selectedCustomerId);
-                cmd.Parameters.AddWithValue("@SubTotal", subTotal);
-                cmd.Parameters.AddWithValue("@Discount", discount);
-                cmd.Parameters.AddWithValue("@Total", total);
-                cmd.Parameters.AddWithValue("@Paid", paid);
-                cmd.Parameters.AddWithValue("@Return", returnAmount);
-                cmd.Parameters.AddWithValue("@Date", DateTime.Now);
-                cmd.Parameters.AddWithValue("@AddedBy", addedByValue);
+                SqlCommand cmd = new SqlCommand(transQuery, conn, trans);
+                cmd.Parameters.AddWithValue("@cid", selectedCustomerId);
+                cmd.Parameters.AddWithValue("@subtotal", subTotal);
+                cmd.Parameters.AddWithValue("@discount", discount);
+                cmd.Parameters.AddWithValue("@total", total);
+                cmd.Parameters.AddWithValue("@paid", paid);
+                cmd.Parameters.AddWithValue("@return", returnAmount);
+                cmd.Parameters.AddWithValue("@date", DateTime.Now);
+                cmd.Parameters.AddWithValue("@addedBy", addedBy);
 
                 int transactionId = Convert.ToInt32(cmd.ExecuteScalar());
 
-                string updateStock = @"
-                    UPDATE tbl_products
-                    SET quantity = CAST(TRY_CAST(quantity AS INT) - @Quantity AS NVARCHAR(50))
-                    WHERE product_id = @ProductID
-                    AND TRY_CAST(quantity AS INT) >= @Quantity";
-
-                string detailQuery = @"
-                    INSERT INTO TransactionDetails (TransactionID, ProductID, Price, Quantity, Total)
-                    VALUES (@TransactionID, @ProductID, @Price, @Quantity, @Total)";
-
-                using SqlCommand stockCmd = new SqlCommand(updateStock, con, transaction);
-                stockCmd.Parameters.Add("@Quantity", SqlDbType.Int);
-                stockCmd.Parameters.Add("@ProductID", SqlDbType.Int);
-
-                using SqlCommand detailCmd = new SqlCommand(detailQuery, con, transaction);
-                detailCmd.Parameters.AddWithValue("@TransactionID", transactionId);
-                detailCmd.Parameters.Add("@ProductID", SqlDbType.Int);
-                detailCmd.Parameters.Add("@Price", SqlDbType.Decimal);
-                detailCmd.Parameters.Add("@Quantity", SqlDbType.Int);
-                detailCmd.Parameters.Add("@Total", SqlDbType.Decimal);
-
+                // ب- سەیڤکردنی وردەکاری هەر کاڵایەک و کەمکردنەوەی لە مەخزەن
                 foreach (DataGridViewRow row in dgvProducts.Rows)
                 {
                     if (row.IsNewRow) continue;
@@ -402,46 +364,46 @@ namespace Billing_System
                     int productId = Convert.ToInt32(row.Cells["ProductID"].Value);
                     int quantity = Convert.ToInt32(row.Cells["Quantity"].Value);
                     decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
-                    decimal productTotal = price * quantity;
+                    decimal productTotal = Convert.ToDecimal(row.Cells["Total"].Value);
 
-                    stockCmd.Parameters["@Quantity"].Value = quantity;
-                    stockCmd.Parameters["@ProductID"].Value = productId;
-                    int affected = stockCmd.ExecuteNonQuery();
+                    // کەمکردنەوەی لە مەخزەن (Update Stock)
+                    string stockQuery = "UPDATE tbl_products SET quantity = CAST(quantity AS INT) - @qty WHERE product_id = @pid";
+                    SqlCommand stockCmd = new SqlCommand(stockQuery, conn, trans);
+                    stockCmd.Parameters.AddWithValue("@qty", quantity);
+                    stockCmd.Parameters.AddWithValue("@pid", productId);
+                    stockCmd.ExecuteNonQuery();
 
-                    if (affected == 0)
-                    {
-                        throw new Exception("Product stock changed or insufficient. Please try again.");
-                    }
-
-                    detailCmd.Parameters["@ProductID"].Value = productId;
-                    detailCmd.Parameters["@Price"].Value = price;
-                    detailCmd.Parameters["@Quantity"].Value = quantity;
-                    detailCmd.Parameters["@Total"].Value = productTotal;
+                    // زیادکردنی وردەکاری بۆ خشتەی TransactionDetails
+                    string detailQuery = "INSERT INTO TransactionDetails (TransactionID, ProductID, Price, Quantity, Total) " +
+                                         "VALUES (@tid, @pid, @price, @qty, @total)";
+                    SqlCommand detailCmd = new SqlCommand(detailQuery, conn, trans);
+                    detailCmd.Parameters.AddWithValue("@tid", transactionId);
+                    detailCmd.Parameters.AddWithValue("@pid", productId);
+                    detailCmd.Parameters.AddWithValue("@price", price);
+                    detailCmd.Parameters.AddWithValue("@qty", quantity);
+                    detailCmd.Parameters.AddWithValue("@total", productTotal);
                     detailCmd.ExecuteNonQuery();
                 }
 
-                transaction.Commit();
+                // سەیڤکردنی هەموو گۆڕانکارییەکان
+                trans.Commit();
 
-                MessageBox.Show(
-                    "Transaction Saved Successfully!\nTransaction ID: " + transactionId,
-                    "Success",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
+                MessageBox.Show("Transaction Saved Successfully!\nTransaction ID: " + transactionId);
                 ClearForm();
             }
             catch (Exception ex)
             {
-                transaction?.Rollback();
-
-                MessageBox.Show(
-                    "Error: " + ex.Message,
-                    "Database Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                // ئەگەر هەڵەیەک ڕوویدا هەمووی هەڵدەوەشێنێتەوە
+                trans.Rollback();
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
 
+        // پاککردنەوەی خانەکانی کاڵا
         private void ClearProductFields()
         {
             idtxt.Clear();
@@ -451,32 +413,25 @@ namespace Billing_System
             quantxt.Clear();
         }
 
+        // پاککردنەوەی تەواوی فۆڕمەکە دوای سەیڤکردن
         private void ClearForm()
         {
-            isClearing = true;
-            try
-            {
-                selectedCustomerId = 0;
+            selectedCustomerId = 0;
 
-                searchtxt.Clear();
-                nametxt.Clear();
-                emailtxt.Clear();
-                addresstxt.Clear();
+            searchtxt.Clear();
+            nametxt.Clear();
+            emailtxt.Clear();
+            addresstxt.Clear();
 
-                ClearProductFields();
+            ClearProductFields();
 
-                txtSubTotal.Clear();
-                txtDiscount.Clear();
-                txtTotal.Clear();
-                txtPaid.Clear();
-                txtReturn.Clear();
+            txtSubTotal.Clear();
+            txtDiscount.Clear();
+            txtTotal.Clear();
+            txtPaid.Clear();
+            txtReturn.Clear();
 
-                dgvProducts.Rows.Clear();
-            }
-            finally
-            {
-                isClearing = false;
-            }
+            dgvProducts.Rows.Clear();
         }
     }
 }
